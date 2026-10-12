@@ -1,5 +1,5 @@
 {
-  "curriculum_version": "4.0.0",
+  "curriculum_version": "5.0.0",
   "missions": {
     "ai-agent-baseline": {
       "activity": {
@@ -3452,105 +3452,86 @@
         "action": "Correct the fictional Slurm array practice file, add a concurrency cap, and make every task log name unique.",
         "expected_result": "The checker accepts ten tasks with a concurrency cap of one and unique logs; no command submits the practice file to Euler.",
         "kind": "repository_task",
-        "learning_checks": [
-          {
-            "answer": [
-              "correct"
-            ],
-            "critical": false,
-            "feedback": "Two running array tasks reserve 2 CPUs and 6 GiB. Add the existing 2 CPUs and 6 GiB: 4 CPUs and 12 GiB total. The eight tasks determine total work, not simultaneous demand; the cap does not constrain other jobs.",
-            "hint": "Count running tasks first, then add the separate job.",
-            "id": "other_active_jobs",
-            "options": [
-              {
-                "id": "wrong_a",
-                "label": "Eight CPUs and 24 GiB, ignoring the already-running job."
-              },
-              {
-                "id": "correct",
-                "label": "Four CPUs and 12 GiB: two array tasks plus the existing job."
-              },
-              {
-                "id": "wrong_b",
-                "label": "Two CPUs and 6 GiB, because the cap covers every job."
-              }
-            ],
-            "prompt": "Another job already uses two CPUs and 6 GiB. An array has eight tasks, cap two, and each task requests one CPU and 3 GiB. What maximum combined reservation should you review?",
-            "type": "single"
-          }
-        ],
         "machine": "local",
         "questions": [
           {
             "answer": [
-              "correct"
+              "combined"
             ],
             "critical": true,
-            "feedback": "At most four array tasks may run concurrently.",
-            "id": "array_cap",
+            "feedback": "Count at most 3 array tasks: 3 x 2 = 6 CPUs and 3 x 2 x 3 = 18 GiB. Add the other job: 8 CPUs and 23 GiB. The range does not make all 12 tasks run together.",
+            "id": "combined_peak",
             "options": [
               {
-                "id": "correct",
-                "label": "At most four array tasks may run concurrently."
+                "id": "combined",
+                "label": "8 CPUs and 23 GiB."
               },
               {
-                "id": "wrong_a",
-                "label": "Each task receives four CPUs."
+                "id": "all_tasks",
+                "label": "26 CPUs and 77 GiB."
               },
               {
-                "id": "wrong_b",
-                "label": "The array repeats four times."
+                "id": "array_only",
+                "label": "6 CPUs and 18 GiB."
+              },
+              {
+                "id": "per_task",
+                "label": "8 CPUs and 14 GiB."
               }
             ],
-            "prompt": "What does %4 mean in --array=0-31%4?",
+            "prompt": "The proposed array has 12 tasks, cap 3, 2 CPUs per task and 3 GiB per CPU. Another job holds 2 CPUs and 5 GiB. What is the maximum combined demand?",
             "type": "single"
           },
           {
             "answer": [
-              "correct"
+              "cap_two"
             ],
-            "critical": false,
-            "feedback": "%A for the parent job and %a for the task index.",
-            "id": "array_logs",
+            "critical": true,
+            "feedback": "Each array task needs 2 CPUs and 6 GiB. After the other job, 8 CPUs and 15 GiB remain in the fictional budget. Cap 2 fits (6 CPUs, 17 GiB combined); cap 3 exceeds memory (23 GiB). Check both limits, not only CPU.",
+            "id": "budget_cap",
             "options": [
               {
-                "id": "correct",
-                "label": "%A for the parent job and %a for the task index."
+                "id": "cap_two",
+                "label": "Cap 2: 6 CPUs and 17 GiB combined."
               },
               {
-                "id": "wrong_a",
-                "label": "%u and %h."
+                "id": "cap_three",
+                "label": "Cap 3: 8 CPUs and 23 GiB combined."
               },
               {
-                "id": "wrong_b",
-                "label": "Only %j, the individual job ID."
+                "id": "cap_four",
+                "label": "Cap 4: 10 CPUs and 29 GiB combined."
+              },
+              {
+                "id": "contradiction",
+                "label": "Cap 3: 8 CPUs and 17 GiB combined."
               }
             ],
-            "prompt": "Which placeholders show the parent array and task index in log filenames?",
+            "prompt": "An array has 12 tasks, 2 CPUs per task and 3 GiB per CPU. Another job holds 2 CPUs and 5 GiB. Under a fictional combined budget of 10 CPUs and 20 GiB, what is the largest cap that fits both limits?",
             "type": "single"
           },
           {
             "answer": [
-              "correct"
+              "node_total"
             ],
             "critical": true,
-            "feedback": "The %3 cap allows three tasks at once. Each uses 2 CPUs and 8 GiB, so the concurrent total is 6 CPUs and 24 GiB.",
-            "id": "array_aggregate",
+            "feedback": "--mem requests memory per node. With one node per array task here, 3 tasks request 3 x 3 = 9 GiB, plus the other job: 14 GiB. CPU stays 3 x 2 + 2 = 8. This is a planning comparison, not evidence that 3 GiB would be sufficient for a real program.",
+            "id": "node_memory",
             "options": [
               {
-                "id": "correct",
-                "label": "3 tasks, 6 CPUs, and 24 GiB of system memory."
+                "id": "node_total",
+                "label": "The combined request becomes 8 CPUs and 14 GiB, within the fictional 10 CPU / 20 GiB budget."
               },
               {
-                "id": "wrong_a",
-                "label": "10 tasks, 20 CPUs, and 80 GiB of system memory."
+                "id": "unchanged",
+                "label": "It stays 8 CPUs and 23 GiB because memory is always per CPU."
               },
               {
-                "id": "wrong_b",
-                "label": "3 tasks, 2 CPUs, and 4 GiB of system memory."
+                "id": "omit_job",
+                "label": "It becomes 6 CPUs and 9 GiB; the array cap includes the other job."
               }
             ],
-            "prompt": "An array uses --array=0-9%3, --cpus-per-task=2, and --mem-per-cpu=4G. What is its maximum concurrent request?",
+            "prompt": "A 12-task array is capped at 3. Each task uses one node, 2 CPUs and --mem=3G instead of --mem-per-cpu=3G. Another job holds 2 CPUs and 5 GiB. What is the combined peak request?",
             "type": "single"
           }
         ],
@@ -3561,13 +3542,8 @@
               "commands": [],
               "expected": "You can distinguish total task count from the maximum running at once.",
               "id": "terms",
-              "instruction": "Use the range and cap distinction above when reading the fictional file. Before opening a repair, predict the total task count and how many could run together.",
-              "links": [
-                {
-                  "label": "Open the job-array lab",
-                  "url": "../../../docs/labs/euler-job-arrays.md"
-                }
-              ],
+              "instruction": "Read the range and cap distinction above. This is local review only; no array is submitted.",
+              "links": [],
               "machine": "browser",
               "on_failure": "Do not submit a real array until you can calculate its simultaneous resource total.",
               "on_success": "Open the deliberately unsafe local practice file.",
@@ -3650,17 +3626,17 @@
             },
             {
               "commands": [],
-              "expected": "You can calculate the maximum simultaneous tasks, CPUs, system memory, and GPUs before submission.",
+              "expected": "Compare peak requested CPUs and system memory with both fictional limits. This is not your Euler entitlement. Keep the practice file at cap one; no job is submitted.",
               "id": "calculate",
-              "instruction": "The practice repair uses ten tasks with cap one. For the separate question, first calculate the simultaneous demand of cap three with two CPUs and 4 GiB per CPU, then compare with the model above. Add other active jobs: this cap limits only this array. No real array is submitted.",
+              "instruction": "Plan a different array on paper: 12 tasks, cap 3, 2 CPUs per task and 3 GiB per CPU. Another job holds 2 CPUs and 5 GiB. The fictional combined budget is 10 CPUs and 20 GiB. Assume one node and one Slurm task per array task, with allocated CPUs matching the request.",
               "links": [],
-              "machine": "local",
-              "on_failure": "Keep the cap at one until the per-task and combined totals are known.",
-              "on_success": "Review the edited practice file.",
+              "machine": "browser",
+              "on_failure": "If a calculation does not fit, reduce concurrency on paper. Do not change CPU or memory estimates just to fit a budget: a real program needs measured evidence first.",
+              "on_success": "Answer the three planning questions after reviewing the local file. For the memory-option comparison, replace the proposal's --mem-per-cpu=3G with --mem=3G; do not add both.",
               "platforms": [
                 "all"
               ],
-              "title": "Calculate the concurrent resource total"
+              "title": "Plan a different array on paper"
             },
             {
               "commands": [
@@ -3727,7 +3703,7 @@
           "error_unique",
           "safe_resources"
         ],
-        "remote_assessor": "slurm_array",
+        "remote_assessor": "slurm_array_v2",
         "requires_live_confirmation": false
       }
     },

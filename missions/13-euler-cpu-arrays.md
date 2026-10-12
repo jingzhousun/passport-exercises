@@ -2,40 +2,44 @@
 
 ## Outcome
 
-Review the local fictional array file, limit simultaneous tasks and make its
-log names traceable. This exercise never submits an array.
+Calculate an array's peak demand with another job already active, then choose
+a cap that fits a supplied budget. Keep the local guided file repair.
 
 ## Concept
 
-An array runs similar tasks from one script. The range sets total tasks; the
-number after % is the concurrency cap, or maximum allowed to run together.
-Each running task reserves its own resources. The cap limits simultaneous
-demand, not the amount of work and not your other jobs. A distinct log name
-keeps each task's output separate, so it can be traced and does not overwrite another.
+A job array repeats a job for several inputs. Its range gives the total number
+of tasks; the number after `%` is the concurrency cap, limiting how many can
+run together. Each running
+task requests its own CPUs and system memory. Your other jobs count too.
+A distinct log name identifies each task and keeps its output separate.
 
 ## Learning Challenge
 
-The unsafe file allows 100 tasks without a cap. Before opening the supplied
-repair, identify the unbounded setting and predict what a cap of one changes.
-This guided assessment requires exactly --array=0-9%1 and the shown log form.
-Do not paste file directives into a terminal or run sbatch.
+Plan the proposal at the calculation step, then answer the three questions.
+You can use paper or a calculator.
+
+The guided file repair and the planning example are separate. Keep the
+practice file at its required cap of one; do not put the proposed caps into it
+or submit an array to Euler.
 
 ## Worked Example
 
 <details>
-<summary>Check the separate concurrency calculation</summary>
+<summary>A reminder for the calculation</summary>
 
-With cap three, two CPUs and 4 GiB per CPU, at most three tasks reserve
-3 x 2 = 6 CPUs and 3 x 2 x 4 = 24 GiB together. Add other running jobs before
-any future approved submission. %A labels the parent array and %a its task
-index; %j is also a distinct running job ID, but does not directly label both.
+Count simultaneous array tasks first, then work out their CPU and memory
+requests. Add the resources held by every other job. Compare CPU and memory
+separately with the budget; fitting one limit is not enough.
+
+`--mem-per-cpu` requests memory for each allocated CPU. `--mem` requests memory
+per node. In this example each array task uses one node and one Slurm task.
+Do not use both memory options in the same script.
 
 </details>
 
 ## Common Trap
 
-Confusing total tasks with running tasks, or omitting other arrays and jobs.
-A fixed shared filename can collide; %j does not inherently cause a collision.
+A planning cap is not the required cap-one file repair. Keep them separate.
 
 ## Your Action
 
@@ -55,9 +59,7 @@ before continuing if these words are new.
 
 **Where:** This web page in your browser
 
-Use the range and cap distinction above when reading the fictional file. Before opening a repair, predict the total task count and how many could run together.
-
-- [Open the job-array lab](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/labs/euler-job-arrays.md)
+Read the range and cap distinction above. This is local review only; no array is submitted.
 
 **Expected:** You can distinguish total task count from the maximum running at once.
 
@@ -136,17 +138,17 @@ Replace both log directives with the two exact lines below. %A is the parent job
 
 **If not:** Correct both settings before pressing Check my work.
 
-### 6. Calculate the concurrent resource total
+### 6. Plan a different array on paper
 
-**Where:** The laptop or desktop in front of you
+**Where:** This web page in your browser
 
-The practice repair uses ten tasks with cap one. For the separate question, first calculate the simultaneous demand of cap three with two CPUs and 4 GiB per CPU, then compare with the model above. Add other active jobs: this cap limits only this array. No real array is submitted.
+Plan a different array on paper: 12 tasks, cap 3, 2 CPUs per task and 3 GiB per CPU. Another job holds 2 CPUs and 5 GiB. The fictional combined budget is 10 CPUs and 20 GiB. Assume one node and one Slurm task per array task, with allocated CPUs matching the request.
 
-**Expected:** You can calculate the maximum simultaneous tasks, CPUs, system memory, and GPUs before submission.
+**Expected:** Compare peak requested CPUs and system memory with both fictional limits. This is not your Euler entitlement. Keep the practice file at cap one; no job is submitted.
 
-**Continue when:** Review the edited practice file.
+**Continue when:** Answer the three planning questions after reviewing the local file. For the memory-option comparison, replace the proposal's --mem-per-cpu=3G with --mem=3G; do not add both.
 
-**If not:** Keep the cap at one until the per-task and combined totals are known.
+**If not:** If a calculation does not fit, reduce concurrency on paper. Do not change CPU or memory estimates just to fit a budget: a real program needs measured evidence first.
 
 ### 7. Review the edited file
 
@@ -183,50 +185,39 @@ browser. Do not create or edit a submission JSON file by hand.
 
 ## Check Your Work
 
-Use **Check my work** before submitting. This check runs on your computer and
-checks only the practical work in this lesson. A score of 100% is required, and every
-safety-critical question must be correct. Failed attempts provide targeted
-feedback and can be retried without penalty.
-
-## Learning Check
-
-### Practise
-
-Try an answer before opening the explanation. These questions are for
-practice; they do not affect your progress.
-
-1. Another job already uses two CPUs and 6 GiB. An array has eight tasks, cap two, and each task requests one CPU and 3 GiB. What maximum combined reservation should you review?
-
-   - Eight CPUs and 24 GiB, ignoring the already-running job.
-   - Four CPUs and 12 GiB: two array tasks plus the existing job.
-   - Two CPUs and 6 GiB, because the cap covers every job.
-
-<details class="learning-explanation">
-<summary>See an explanation</summary>
-
-Two running array tasks reserve 2 CPUs and 6 GiB. Add the existing 2 CPUs and 6 GiB: 4 CPUs and 12 GiB total. The eight tasks determine total work, not simultaneous demand; the cap does not constrain other jobs.
-
-</details>
+Answer the three planning questions and review the declared fictional file.
+**Check my work** checks both your answers and the cap-one/log repair on this
+computer. All three answers and every file check must pass before **Submit
+lesson** is available. Feedback explains a failed calculation; correct your
+answer and check again. Nothing in this lesson submits a job to Euler.
 
 ## If Blocked
 
-Reduce the cap to `%1` and validate a representative input. If many tasks fail
-identically, cancel the array and debug one task. Use the
-[job arrays lab](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/labs/euler-job-arrays.md) for dependent or
-heterogeneous workloads.
+Keep the guided file repair at `--array=0-9%1`. If a calculation fails, count
+running tasks, add the separate job, then check CPU and memory against their
+budgets. A planning cap of two does not change the required cap-one file repair.
 
-Useful references:
+If the file check fails, inspect the named file and its diff. Keep it smaller
+than 100000 bytes; remove only an understood accidental addition. Do not reset
+the repository, recreate your Passport, submit an array or change an account.
+Use the local Passport's public help request if the expected result stays unclear;
+exclude credentials, private logs and real research files.
 
-- [Euler job arrays](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/labs/euler-job-arrays.md)
-- [Slurm reference](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/reference/euler/slurm.md)
+Useful references, only if needed; return to this lesson afterwards:
+
+- [Array review](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/labs/euler-job-arrays.md): range, cap and logs.
+- [Slurm reference](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/reference/euler/slurm.md): job lifecycle.
 
 ## Understand Before Accepting AI Output
 
-Calculate concurrency yourself and include other submissions. A personal or
-lab limit is a ceiling, not a target for an agent to consume.
+Calculate the combined request yourself. An array's cap does not constrain
+other jobs. A budget is a ceiling, not a target. The numbers in this lesson are
+fictional; an agent must not treat them as permission to launch real jobs or
+reduce a real memory estimate without measurements.
 
 ## Finish And Continue
 
-When **Check my work** passes, use **Submit lesson** once. The launcher
-publishes only this lesson's generated submission after private information is excluded. Continue when the
-progress page shows the automatic GitHub result as passed; a check on your computer alone is not a pass.
+When **Check my work** passes, use **Submit lesson** once. Only this lesson's
+generated answers, receipt and declared fictional file are published. Continue
+when the progress page shows the automatic GitHub result as passed; a check
+on this computer alone is not completion.
