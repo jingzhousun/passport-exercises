@@ -158,7 +158,7 @@ In a local Passport, Prepare practice folder creates workspace/slurm/gpu_job.slu
 
 **Where:** The laptop or desktop in front of you
 
-From the practice repository root, inspect the diff of the named file. This is a text review, not a Slurm syntax or performance test. The current checker enforces starter bounds; it cannot establish whether a real workload needs them.
+From the practice repository root, inspect the diff of the named file. This is a text review, not a Slurm syntax or performance test. The current checker enforces starter bounds; it cannot establish whether a real workload needs them. Slurm ignores directives after the first shell command. Keep every #SBATCH line before commands, with one unquoted long option and literal value per line. Keep each option only once. Use the supplied options; optional --nodes and --ntasks must each be 1.
 
 **Open PowerShell on your Windows computer, then run:**
 
@@ -210,8 +210,9 @@ and every changed directive yourself before accepting it.
 ## Understand Before Accepting AI Output
 
 Check the CPU times memory calculation, time headroom and every directive yourself.
-The script check does not evaluate the program body, repeated or late directives,
-extra node/task/array requests, software compatibility or actual performance.
+The script check rejects repeated or late directives and options outside this
+exercise. It permits only one node and one Slurm task per job. It does not
+evaluate the program body, software compatibility or actual performance.
 Review these separately before any real submission.
 
 ## Finish And Continue
