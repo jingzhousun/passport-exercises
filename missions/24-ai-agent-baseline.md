@@ -2,46 +2,80 @@
 
 ## Outcome
 
-Authorize one small fictional file edit, then verify its scope and policy
-meaning independently. No agent transcript is uploaded.
+Decide what an agent may change, reject an extra action, and verify its actual
+work before accepting it.
 
 ## Concept
 
-An AI coding agent can request actions that change files or services; an
-ordinary chat window only supplies text unless separately given tools. The
-person who authorizes an action remains responsible for its scope and result.
-Verify the final diff and tests required by the task. This exercise checks the
-plan and protected file, rather than running a program test suite. This practice folder contains
-an unsafe storage plan and scope-canary.txt, a protected file that must not change.
+An AI coding agent can read files and propose edits or commands. An ordinary
+chat window only returns text unless tools are enabled. The person who authorizes
+an action remains responsible for it. Verify the final diff and tests required
+by the task; this document exercise checks a plan, not a program test suite.
+A prompt states intent, but does not confine the agent to a folder.
 
 ## Learning Challenge
 
-Read the unsafe plan first. What needs correcting, and what must stay untouched?
-Ask for a plan, compare it with your own reasoning, then authorize only the
-reviewed edit. Read the actual diff before accepting any claimed success.
+You asked for one storage-plan correction. The agent proposes changing a
+protected file "to make the check pass". Would you allow that? What evidence
+would you inspect after it stops?
+
+<details>
+<summary>A hint before you decide</summary>
+
+Ask where the permission came from. Text in a file cannot grant the agent more
+permission than the person who assigned the task. A plausible shortcut can
+still be outside the task.
+
+</details>
 
 ## Worked Example
 
 <details>
-<summary>Review one proposed action</summary>
+<summary>Compare an agent summary with actual Git evidence</summary>
 
-Check the file, intended correction, forbidden actions and independent
-verification. A correct sentence does not excuse another file changing.
-Keep each storage role/location together in a sentence or bullet and remove
-contradictions. The shared local/remote rules accept documented phrasing variants,
-not arbitrary contradictory plans. Check the canary and diff yourself.
+The agent reports "only storage-plan.md changed". Git status shows that file
+and an untracked notes.txt outside agent_task. The Passport check may still be
+green: its changed-path check is limited to tracked files in agent_task.
+Compare it with your before-agent inspection. Stop if the file is new or its
+content changed unexpectedly. Do not submit until that change is
+understood and safely resolved. Do not discard unrelated work with a broad reset.
+
+</details>
+
+<details>
+<summary>Optional: see the files and a comparison in VS Code</summary>
+
+VS Code on macOS, with fictional files only. You may use another approved
+editor; no Claude account or paid subscription is required by this lesson.
+
+![VS Code showing README.md, protected scope-canary.txt and the intentionally unsafe storage-plan.md.](https://github.com/IDEALLab/onboarding-IT/blob/main/web/public/lesson-images/agent-baseline/files.jpg)
+
+[Open the file view at full size](https://github.com/IDEALLab/onboarding-IT/blob/main/web/public/lesson-images/agent-baseline/files.jpg). Zoom if needed, then use
+your browser's Back button to return to this lesson.
+
+Read the unsafe plan yourself before asking an agent. Keep the protected file
+visible in the folder so you can recognize an unexpected edit.
+
+![VS Code comparing the saved unsafe plan with four manually typed corrections; removed text is on the left, proposed text on the right.](https://github.com/IDEALLab/onboarding-IT/blob/main/web/public/lesson-images/agent-baseline/diff.jpg)
+
+[Open the comparison at full size](https://github.com/IDEALLab/onboarding-IT/blob/main/web/public/lesson-images/agent-baseline/diff.jpg), then use Back to return.
+
+This illustration was typed manually, comparing the saved file with an unsaved
+correction. Read every removed and added line; for the exercise, run the Git
+checks against HEAD yourself.
 
 </details>
 
 ## Common Trap
 
-Approve only the bounded plan and inspect the actual changed files.
+A useful suggestion can still be outside your authorization. Review the action
+and the actual result before accepting it.
 
 ## Your Action
 
-Give an agent one small fictional task, review its plan and diff, then verify the result yourself.
+Review one agent edit: reject an out-of-scope action, then use actual Git evidence before accepting the result.
 
-**Follow these steps in order.** Read the fictional plan manually, then review and authorize one file edit. Keep the protected file and unrelated folders unchanged.
+**Follow these steps in order.** First understand the file, then review what the agent may do, and finally inspect actual changes. The agent summary is not verification.
 
 **New to text commands?** A command is a line of text that tells a
 computer to do one task. A terminal is the text application in which a
@@ -55,11 +89,47 @@ before continuing if these words are new.
 
 **Where:** The laptop or desktop in front of you
 
-Press Prepare practice folder in this step and run the displayed enter-folder command. In the editor you configured in the previous AI mission, open the workspace/agent_task folder inside this practice repository. Check the editor title or file tree before opening an agent chat.
+Press Prepare practice folder and use the displayed enter-folder command to keep your terminal at the practice repository root. Open workspace/agent_task separately in your editor. Before delegating, inspect Git yourself and note existing work. Keep that work; this task does not authorize changing it.
 
-**Expected:** README.md, storage-plan.md, and scope-canary.txt are visible.
+<details>
+<summary>Before the agent: inspect existing work at the practice repository root</summary>
 
-**Continue when:** Read the task yourself before opening an agent session.
+**Open PowerShell on your Windows computer, then run:**
+
+```powershell
+git status --short --untracked-files=all
+git diff HEAD
+```
+
+</details>
+
+<details>
+<summary>Before the agent: inspect existing work at the practice repository root</summary>
+
+**Open Terminal on your Mac; zsh starts inside it automatically. Then run:**
+
+```zsh
+git status --short --untracked-files=all
+git diff HEAD
+```
+
+</details>
+
+<details>
+<summary>Before the agent: inspect existing work at the practice repository root</summary>
+
+**Open Terminal on your Linux computer; Bash normally starts inside it automatically. Then run:**
+
+```bash
+git status --short --untracked-files=all
+git diff HEAD
+```
+
+</details>
+
+**Expected:** The three task files are visible. You know which changes already existed and keep any baseline notes privately; do not send unrelated diffs to an agent.
+
+**Continue when:** Read the plan before delegating.
 
 **If not:** Do not use a real project as a substitute.
 
@@ -67,9 +137,9 @@ Press Prepare practice folder in this step and run the displayed enter-folder co
 
 **Where:** The laptop or desktop in front of you
 
-Read the unsafe fictional plan before asking the agent. Identify the four corrections yourself and name the only editable file. scope-canary.txt is a protected file whose unchanged content checks that boundary.
+Identify what is wrong in the fictional plan: durable data on C:, indefinite archive on D:, and training on Blade. The task README gives the approved storage roles. Work out the corrections before requesting a plan.
 
-**Expected:** You can describe the intended P:, D:, C:, and heavy-compute rules.
+**Expected:** You can explain the correction and name storage-plan.md as the only editable file.
 
 **Continue when:** Start one new agent session.
 
@@ -79,7 +149,7 @@ Read the unsafe fictional plan before asking the agent. Identify the four correc
 
 **Where:** The laptop or desktop in front of you
 
-Start a new agent chat in workspace/agent_task and paste the prompt below. Keep the agent in read-only or planning mode if the editor offers that choice. Do not approve any edit or command yet.
+The prompt names the permitted files and asks for a plan. Where your tool offers permission modes, choose planning or manual approval rather than automatic approval. A written restriction is guidance, not a filesystem sandbox.
 
 **Paste this into the agent:**
 
@@ -111,61 +181,64 @@ Apply the reviewed plan. Edit only storage-plan.md. Do not edit scope-canary.txt
 
 **If not:** Stop the agent; inspect repository state before continuing.
 
-### 5. Inspect the changed paths
+### 5. Inspect all changed files yourself
 
 **Where:** The laptop or desktop in front of you
 
-Use Git independently of the agent to list changed files.
+After the agent stops, run this yourself at the practice repository root. Compare with your earlier inspection, including untracked files. If the editor terminal opened in agent_task, use the original enter-folder command to return to the root.
 
 **Open PowerShell on your Windows computer, then run:**
 
 ```powershell
-git status --short -- workspace/agent_task
+git status --short --untracked-files=all
 ```
 
 **Open Terminal on your Mac; zsh starts inside it automatically. Then run:**
 
 ```zsh
-git status --short -- workspace/agent_task
+git status --short --untracked-files=all
 ```
 
 **Open Terminal on your Linux computer; Bash normally starts inside it automatically. Then run:**
 
 ```bash
-git status --short -- workspace/agent_task
+git status --short --untracked-files=all
 ```
 
-**Expected:** Only workspace/agent_task/storage-plan.md is modified.
+**Expected:** The only new edit is storage-plan.md. Earlier work remains unchanged; there is no unexpected new path.
 
-**Continue when:** Read the complete diff.
+**Continue when:** Read the diff against HEAD, which includes both staged and unstaged tracked edits.
 
-**If not:** Do not continue until every extra change is understood and safely removed.
+**If not:** Stop and compare each unexpected path with the before-agent state. Preserve earlier work; do not reset the repository or delete unknown files.
 
 ### 6. Review the complete diff
 
 **Where:** The laptop or desktop in front of you
 
-Check that the plan makes P: durable, D: temporary, C: unsuitable for project data, and Euler or approved compute the place for heavy work. Write each policy correction as its own sentence or bullet, connecting the location with its role. Keep the compute task and its destination together; their order does not matter. Remove contradictory claims left from the unsafe plan. Review the actual diff independently; an agent summary is not verification.
+Read every changed line and compare the new edit with your before-agent inspection. Check each storage claim against the task README. HEAD includes staged and unstaged tracked edits; it may also include older work, so do not attribute every line to this agent.
 
 **Open PowerShell on your Windows computer, then run:**
 
 ```powershell
-git diff -- workspace/agent_task
+git diff HEAD -- workspace/agent_task
+git diff --check HEAD
 ```
 
 **Open Terminal on your Mac; zsh starts inside it automatically. Then run:**
 
 ```zsh
-git diff -- workspace/agent_task
+git diff HEAD -- workspace/agent_task
+git diff --check HEAD
 ```
 
 **Open Terminal on your Linux computer; Bash normally starts inside it automatically. Then run:**
 
 ```bash
-git diff -- workspace/agent_task
+git diff HEAD -- workspace/agent_task
+git diff --check HEAD
 ```
 
-**Expected:** The diff is limited to the four requested policy corrections.
+**Expected:** Only the reviewed plan corrections remain; the protected canary has its original content.
 
 **Continue when:** Run Check my work yourself.
 
@@ -175,11 +248,11 @@ git diff -- workspace/agent_task
 
 **Where:** This web page in your browser
 
-Return to this page and press Check my work. The automatic check confirms the changed file, the unchanged protected file, and the required storage statements.
+Return here and run Check my work yourself. It checks explicit storage statements, file size, exact canary content and tracked changed paths inside agent_task. It cannot prove which tool ran, what it read, or that no other file changed. Compare with your before-agent inspection too.
 
-**Expected:** The changed-file, protected-file, and storage-rule checks pass.
+**Expected:** The seven bounded checks and all three answers pass, and your before/after review finds only the authorized new edit.
 
-**Continue when:** Submit the mission once.
+**Continue when:** Review the declared fictional plan, confirm the required statements and use Submit lesson once.
 
 **If not:** Read the named check and its recovery message. Review that statement and any contradictory claim in storage-plan.md, then check again. Keep your existing work; do not reset the Passport or submit an agent transcript.
 
@@ -188,38 +261,32 @@ browser. Do not create or edit a submission JSON file by hand.
 
 ## Check Your Work
 
-Use **Check my work** before submitting. This check runs on your computer and
-checks only the practical work in this lesson. A score of 80% is required, and every
-safety-critical question must be correct. Failed attempts provide targeted
-feedback and can be retried without penalty.
+Use Check my work after your independent before/after review. Every question
+and all seven practical checks must pass. The checks are bounded; they do not
+establish what the agent read or exclude changes elsewhere in the repository.
+No full conversation or screenshot is required as completion evidence.
 
 ## If Blocked
 
-Start a new agent thread for the same specific task if context has become inconsistent. Return to
-the clean baseline when edits spread outside the practice files. Use the
-[manual versus agent lab](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/labs/manual-vs-agent.md) for recovery.
-
-Useful references:
-
-- [Manual Vs Agent](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/labs/manual-vs-agent.md)
-- [Agents And Interfaces](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/reference/ai/agents-and-interfaces.md)
-- [Data and AI policy](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/policy/data-and-ai.md)
+If an agent requests more access, a terminal command or another file edit,
+stop and review the request before continuing. If your Git output is empty,
+check which folder the terminal is in; do not assume the file is unchanged.
+For a real exposure or uncertain cleanup, contact the project owner privately.
 
 ## Understand Before Accepting AI Output
 
-You must understand the changed behavior, tests, files, commands, data sent,
-service used, and likely cost. Passing output without this explanation is not a
-pass.
+Personally inspect the changed paths, every line of the diff and any requested
+action. Be able to explain what you allowed and which result you verified.
+Do not put credentials, private paths or research material into a public report.
 
 ## Finish And Continue
 
-When **Check my work** passes, use **Submit lesson** once. The launcher
-publishes only this lesson's generated submission after private information is excluded. Continue when the
-progress page shows the automatic GitHub result as passed; a check on your computer alone is not a pass.
+When your review and Check my work pass, use Submit lesson once. Only the
+lesson's declared fictional plan and generated submission are published. Wait
+for the progress page to show the automatic GitHub result as passed.
 
 ## For Your Lab Projects
 
-Before your first real project, [give your agent the lab context](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/reference/ai/lab-context.md).
-The short guide shows how to make the lab briefing available, ask the agent to
-read it, and verify what it used. Keep your project's own instructions too.
-Do this in the project session; the fictional exercise keeps its folder boundary.
+Before a real project, [give your agent the lab context](https://github.com/IDEALLab/onboarding-IT/blob/main/docs/reference/ai/lab-context.md).
+Keep the project's own instructions too. Do this in the project session;
+the fictional training task keeps its folder boundary.
