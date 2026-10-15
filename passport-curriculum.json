@@ -1,5 +1,5 @@
 {
-  "curriculum_version": "8.0.0",
+  "curriculum_version": "9.0.0",
   "missions": {
     "ai-agent-baseline": {
       "activity": {
@@ -3671,7 +3671,7 @@
               ],
               "expected": "The diff changes only the array cap and the two log names.",
               "id": "review",
-              "instruction": "Confirm that only the fictional practice file changed and that no command submitted it.",
+              "instruction": "Confirm that only the fictional practice file changed and that no command submitted it. Slurm ignores directives after the first shell command. Keep every #SBATCH line before commands, with one unquoted long option and literal value per line. Keep each option only once. Use the supplied options; optional --nodes and --ntasks must each be 1.",
               "links": [],
               "machine": "local",
               "on_failure": "Remove every unrelated change before continuing.",
@@ -3706,17 +3706,21 @@
       "track": "euler_cpu",
       "verification": {
         "critical_must_pass": true,
-        "local_verifier": "slurm_script",
+        "local_verifier": "slurm_array_v3",
         "pass_percent": 100,
         "receipt_checks": [
           "bounded_file",
+          "header_layout",
+          "unique_directives",
+          "supported_options",
+          "single_allocation",
           "account",
           "array_exact",
           "output_unique",
           "error_unique",
           "safe_resources"
         ],
-        "remote_assessor": "slurm_array_v2",
+        "remote_assessor": "slurm_array_v3",
         "requires_live_confirmation": false
       }
     },
@@ -4189,7 +4193,7 @@
               ],
               "expected": "Only the intended fictional script changed; the plan stays within the lab review policy.",
               "id": "review-script",
-              "instruction": "From the practice repository root, inspect the diff of the named file. This is a text review, not a Slurm syntax or performance test. The current checker enforces starter bounds; it cannot establish whether a real workload needs them.",
+              "instruction": "From the practice repository root, inspect the diff of the named file. This is a text review, not a Slurm syntax or performance test. The current checker enforces starter bounds; it cannot establish whether a real workload needs them. Slurm ignores directives after the first shell command. Keep every #SBATCH line before commands, with one unquoted long option and literal value per line. Keep each option only once. Use the supplied options; optional --nodes and --ntasks must each be 1.",
               "links": [],
               "machine": "local",
               "on_failure": "If unsure, leave the file unsubmitted and use Passport help. Do not request a real GPU merely to pass.",
@@ -4224,10 +4228,14 @@
       "track": "euler_gpu",
       "verification": {
         "critical_must_pass": true,
-        "local_verifier": "gpu_script_v2",
+        "local_verifier": "slurm_gpu_v3",
         "pass_percent": 100,
         "receipt_checks": [
           "bounded_file",
+          "header_layout",
+          "unique_directives",
+          "supported_options",
+          "single_allocation",
           "account",
           "gpu_model",
           "no_partition",
@@ -4237,7 +4245,7 @@
           "output_log",
           "error_log"
         ],
-        "remote_assessor": "slurm_gpu_v2",
+        "remote_assessor": "slurm_gpu_v3",
         "requires_live_confirmation": false
       }
     },

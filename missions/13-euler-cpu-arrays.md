@@ -154,7 +154,7 @@ Plan a different array on paper: 12 tasks, cap 3, 2 CPUs per task and 3 GiB per 
 
 **Where:** The laptop or desktop in front of you
 
-Confirm that only the fictional practice file changed and that no command submitted it.
+Confirm that only the fictional practice file changed and that no command submitted it. Slurm ignores directives after the first shell command. Keep every #SBATCH line before commands, with one unquoted long option and literal value per line. Keep each option only once. Use the supplied options; optional --nodes and --ntasks must each be 1.
 
 **Open PowerShell on your Windows computer, then run:**
 
